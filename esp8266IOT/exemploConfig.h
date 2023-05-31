@@ -1,2 +1,2 @@
-#define SSID "nomeDoWifi"
-#define PASSWORD "SenhaDoWifi"
+const char* ssid = "NomeDoWifi";
+const char* password = "SenhaDoWifi";
