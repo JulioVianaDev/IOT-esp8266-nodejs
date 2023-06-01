@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 app.use(cors())
 app.get('/api', (req, res) => {
-  const response = { message: "success" };
+  const response = { message: "success",led: "ligado" };
   res.json(response);
 });
 
