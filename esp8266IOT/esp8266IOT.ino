@@ -3,9 +3,11 @@
 #include <ESP8266HTTPClient.h>
 
 void setup() {
-// put your setup code here, to run once:
   Serial.begin(9600);
-   Serial.println();
+  delay(10);
+
+  // Connect to Wi-Fi network
+  Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
@@ -19,16 +21,13 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
 
-}
-
-void loop() {
-   // put your main code here, to run repeatedly:
+  // Fetch the JSON data
   WiFiClientSecure client;
   HTTPClient http;
 
   client.setInsecure(); // Disabling certificate verification
 
-  http.begin(client, "https://node-deploy-api-tomate.onrender.com/users");
+  http.begin(client, "https://teste-iot-professor.onrender.com/api");
 
   int httpCode = http.GET();
 
@@ -40,5 +39,18 @@ void loop() {
   }
 
   http.end();
+}
 
+void loop() {
+  WiFiClientSecure client;
+  HTTPClient http;
+
+  client.setInsecure(); // Disabling certificate verification
+
+  http.begin(client, "https://teste-iot-professor.onrender.com/api");
+
+  int httpCode = http.GET();
+  String payload = http.getString();
+  Serial.println(payload);
+  delay(100);
 }
