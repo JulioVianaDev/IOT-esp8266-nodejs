@@ -1,9 +1,9 @@
-#include ".\config.h"
-#include <ESP8266WiFi.h>
-#include <ESP8266HTTPClient.h>
+//#include ".\config.h"
+//#include <ESP8266WiFi.h>
+//#include <ESP8266HTTPClient.h>
 
-void setup() {
-// put your setup code here, to run once:
+void setupCerto() {
+  // put your setup code here, to run once:
   Serial.begin(9600);
    Serial.println();
   Serial.print("Connecting to ");
@@ -21,8 +21,8 @@ void setup() {
 
 }
 
-void loop() {
-   // put your main code here, to run repeatedly:
+void loopCerto() {
+  // put your main code here, to run repeatedly:
   WiFiClientSecure client;
   HTTPClient http;
 
