@@ -4,7 +4,7 @@ const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASS;
 
 const connect = ()=>{
-  mongoose.connect(``)
+  mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@iot-professor.wistnqo.mongodb.net/?retryWrites=true&w=majority`)
   const connection = mongoose.connection;
   
   connection.on("error",()=>{

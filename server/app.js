@@ -3,6 +3,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 const LedRouter = require('./routes/ledRoutes')
+require('dotenv').config()
 app.use(cors());
 
 app.use("/led",LedRouter)
@@ -15,3 +16,5 @@ app.get('/api', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+require("./database/connection")
