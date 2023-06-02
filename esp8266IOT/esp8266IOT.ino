@@ -1,9 +1,11 @@
 #include ".\config.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
 
+bool stateLedApi;
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   delay(10);
 
   // Connect to Wi-Fi network
@@ -37,7 +39,7 @@ void setup() {
   } else {
     Serial.println("Error on HTTP request");
   }
-
+  pinMode(D8,OUTPUT);
   http.end();
 }
 
@@ -47,10 +49,26 @@ void loop() {
 
   client.setInsecure(); // Disabling certificate verification
 
-  http.begin(client, "https://teste-iot-professor.onrender.com/api");
+  http.begin(client, "https://teste-iot-professor.onrender.com/led/state-led");
 
   int httpCode = http.GET();
   String payload = http.getString();
-  Serial.println(payload);
-  delay(100);
+  //Serial.println(payload);
+  // Stream& input;
+
+  StaticJsonDocument<54> doc;
+  
+  DeserializationError error = deserializeJson(doc, payload);
+  
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    return;
+  }
+  
+  bool state = doc["state"]; // true
+  Serial.print(state);
+  digitalWrite(D8,state);
+  delay(10);
+  
 }
