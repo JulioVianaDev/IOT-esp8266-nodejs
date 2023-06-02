@@ -11,9 +11,9 @@ module.exports= class ProductsController{
           })
           try {
             await sensor.save()
-            res.status(201).json({message: "Usuário cadastrado com sucesso",sensor: sensor})
+            res.status(201).json({message: "Sensor enviado com sucesso",sensor: sensor})
           } catch (error) {
-            res.status(500).json({message: "Ocorreu um erro ao cadastrar o usuário, tente novamente mais tarde"})
+            res.status(500).json({message: "Ocorreu um erro ao cadastrar o dado do sensor, tente novamente mais tarde"})
           }
     } 
 }
