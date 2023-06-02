@@ -6,7 +6,7 @@ const LedRouter = require('./routes/ledRoutes')
 const SensorRouter = require('./routes/sensorRoutes')
 require('dotenv').config()
 app.use(cors());
-
+app.use(express.json())
 app.use("/led",LedRouter);
 app.use("/sensor",SensorRouter);
 
