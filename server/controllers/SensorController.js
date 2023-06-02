@@ -4,6 +4,8 @@ module.exports= class ProductsController{
         res.send({message: 'funcionando'})
     }
     static async sensorAtivado(req,res){
-        res.json({})
-    }
+        const {nome} = req.body
+        console.log(nome)
+        res.json({nome})
+    } 
 }
