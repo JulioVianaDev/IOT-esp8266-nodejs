@@ -1,3 +1,4 @@
 /server/node_modules
 /server/package-lock.json
 /esp8266IOT/config.h
+/server/.env
