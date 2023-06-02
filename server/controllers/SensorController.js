@@ -1,11 +1,19 @@
-
+const Sensor = require('../models/sensor')
 module.exports= class ProductsController{
     static async init(req,res){
         res.send({message: 'funcionando'})
     }
     static async sensorAtivado(req,res){
-        const {nome} = req.body
-        console.log(nome)
-        res.json({nome})
+        const {nome,distancia} = req.body
+        const sensor = new Sensor({
+           nome,
+           distancia
+          })
+          try {
+            await sensor.save()
+            res.status(201).json({message: "Usuário cadastrado com sucesso",sensor: sensor})
+          } catch (error) {
+            res.status(500).json({message: "Ocorreu um erro ao cadastrar o usuário, tente novamente mais tarde"})
+          }
     } 
 }
