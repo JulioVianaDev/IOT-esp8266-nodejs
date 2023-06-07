@@ -1,10 +1,9 @@
 const mongoose = require("mongoose")
 
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASS;
+const MONGO_URI = process.env.MONGO_URI;
 
 const connect = ()=>{
-  mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@iot-professor.wistnqo.mongodb.net/?retryWrites=true&w=majority`)
+  mongoose.connect(MONGO_URI)
   const connection = mongoose.connection;
   
   connection.on("error",()=>{
