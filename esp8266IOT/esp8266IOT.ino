@@ -4,8 +4,8 @@
 #include <ArduinoJson.h>
 
 bool stateLedApi;
-unsigned long lastTime = 0;
-unsigned long timerDelay = 5000;
+unsigned long lastTimeSensor = 0;
+unsigned long timerDelaySensor = 500;
 unsigned long lastTimeLed = 0;
 unsigned long timerDelayLed = 10;
 void setup() {
@@ -53,8 +53,8 @@ void loop() {
 
   client.setInsecure(); // Disabling certificate verification
   
-  http.begin(client, "https://teste-iot-professor.onrender.com/led/state-led");
   if ((millis() - lastTimeLed) > timerDelayLed) {
+    http.begin(client, "https://teste-iot-professor.onrender.com/led/state-led");
     int httpCode = http.GET();
     String payload = http.getString();
     //Serial.println(payload);
@@ -75,5 +75,12 @@ void loop() {
     digitalWrite(D8,state);
     lastTimeLed = millis();
   }
-  
+  if((millis()-lastTimeSensor > timerDelaySensor)){
+    http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
+    http.addHeader("Content-Type", "application/json");
+    int httpResponseCode = http.POST("{\"nome\":\"IOT PROFESSOR TESTE\",\"distancia\":\"24.25\"}");
+    String ResponseServer = http.getString();
+    Serial.println(ResponseServer);
+    lastTimeSensor = millis();
+  }
 }
