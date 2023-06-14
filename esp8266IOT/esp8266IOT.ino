@@ -5,7 +5,7 @@
 
 bool stateLedApi;
 unsigned long lastTimeSensor = 0;
-unsigned long timerDelaySensor = 500;
+unsigned long timerDelaySensor = 10000;
 unsigned long lastTimeLed = 0;
 unsigned long timerDelayLed = 10;
 void setup() {
@@ -78,7 +78,12 @@ void loop() {
   if((millis()-lastTimeSensor > timerDelaySensor)){
     http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
     http.addHeader("Content-Type", "application/json");
-    int httpResponseCode = http.POST("{\"nome\":\"IOT PROFESSOR TESTE\",\"distancia\":\"24.25\"}");
+    StaticJsonDocument<100> SensorDocument;
+    SensorDocument["nome"] = "Serializando o json";
+    SensorDocument["value"] = 10;
+    char bufferDoJsonEmString[100];
+    serializeJson(SensorDocument, bufferDoJsonEmString);
+    int httpResponseCode = http.POST(bufferDoJsonEmString);
     String ResponseServer = http.getString();
     Serial.println(ResponseServer);
     lastTimeSensor = millis();
