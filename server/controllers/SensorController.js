@@ -8,12 +8,12 @@ module.exports= class ProductsController{
         const sensor = new Sensor({
            nome,
            distancia
-          })
-          try {
-            await sensor.save()
-            res.status(201).json({message: "Sensor enviado com sucesso",sensor: sensor})
-          } catch (error) {
-            res.status(500).json({message: "Ocorreu um erro ao cadastrar o dado do sensor, tente novamente mais tarde"})
-          }
+        })
+        try {
+          await sensor.save()
+          res.status(201).json({message: "Sensor enviado com sucesso",sensor: sensor})
+        } catch (error) {
+          res.status(500).json({message: "Ocorreu um erro ao cadastrar o dado do sensor, tente novamente mais tarde"})
+        }
     } 
 }
