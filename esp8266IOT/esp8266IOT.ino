@@ -4,6 +4,10 @@
 #include <ArduinoJson.h>
 
 bool stateLedApi;
+unsigned long lastTime = 0;
+unsigned long timerDelay = 5000;
+unsigned long lastTimeLed = 0;
+unsigned long timerDelayLed = 10;
 void setup() {
   Serial.begin(115200);
   delay(10);
@@ -48,27 +52,28 @@ void loop() {
   HTTPClient http;
 
   client.setInsecure(); // Disabling certificate verification
-
+  
   http.begin(client, "https://teste-iot-professor.onrender.com/led/state-led");
-
-  int httpCode = http.GET();
-  String payload = http.getString();
-  //Serial.println(payload);
-  // Stream& input;
-
-  StaticJsonDocument<54> doc;
+  if ((millis() - lastTimeLed) > timerDelayLed) {
+    int httpCode = http.GET();
+    String payload = http.getString();
+    //Serial.println(payload);
+    // Stream& input;
   
-  DeserializationError error = deserializeJson(doc, payload);
-  
-  if (error) {
-    Serial.print(F("deserializeJson() failed: "));
-    Serial.println(error.f_str());
-    return;
+    StaticJsonDocument<54> doc;
+    
+    DeserializationError error = deserializeJson(doc, payload);
+    
+    if (error) {
+      Serial.print(F("deserializeJson() failed: "));
+      Serial.println(error.f_str());
+      return;
+    }
+    
+    bool state = doc["state"]; // true
+    Serial.print(state);
+    digitalWrite(D8,state);
+    lastTimeLed = millis();
   }
-  
-  bool state = doc["state"]; // true
-  Serial.print(state);
-  digitalWrite(D8,state);
-  delay(10);
   
 }
