@@ -2,7 +2,6 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-
 bool stateLedApi;
 unsigned long lastTimeSensor = 0;
 unsigned long timerDelaySensor = 10000;
@@ -91,4 +90,4 @@ void loop() {
     Serial.println(ResponseServer);
     lastTimeSensor = millis();
   }
-}
+} 
