@@ -1,15 +1,18 @@
+//Bibliotecas
 #include ".\config.h"
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-bool stateLedApi;
-unsigned long lastTimeSensor = 0;
-unsigned long timerDelaySensor = 10000;
+//Variaveis do led
 
+bool stateLedApi;
 unsigned long lastTimeLed = 0;
 unsigned long timerDelayLed = 10;
 
 //Sensor ultrassonico
+unsigned long lastTimeSensor = 0;
+unsigned long timerDelaySensor = 50;
+
 const int trigPin = D6;
 const int echoPin = D5;
 
@@ -107,20 +110,20 @@ void loop() {
   
   // Calculate the distance
   distanceCm = duration * SOUND_VELOCITY/2;
-  Serial.println(distanceCm);
-  //if((millis()-lastTimeSensor > timerDelaySensor)){
-   // http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
-   // http.addHeader("Content-Type", "application/json");
-   // StaticJsonDocument<100> SensorDocument;
-   // SensorDocument["nome"] = "Serializando o json";
-   // SensorDocument["value"] = 10;
-  //  char bufferDoJsonEmString[100];
-  //  serializeJson(SensorDocument, bufferDoJsonEmString);
-  //  int httpResponseCode = http.POST(bufferDoJsonEmString);
-  //  String ResponseServer = http.getString();
- //   Serial.println(ResponseServer);
- //   lastTimeSensor = millis();
- // }
-
- 
+  
+  if((millis()-lastTimeSensor > timerDelaySensor)){
+    http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
+    http.addHeader("Content-Type", "application/json");
+    StaticJsonDocument<100> SensorDocument;
+    SensorDocument["nome"] = "Serializando o json";
+    SensorDocument["value"] = distanceCm;
+    if(distanceCm < 90 and distanceCm > 30){
+      char bufferDoJsonEmString[100];
+      serializeJson(SensorDocument, bufferDoJsonEmString);
+      int httpResponseCode = http.POST(bufferDoJsonEmString);
+      String ResponseServer = http.getString();
+      //Serial.println(ResponseServer);
+    }
+    lastTimeSensor = millis();
+  }
 } 
