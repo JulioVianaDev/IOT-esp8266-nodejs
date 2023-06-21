@@ -5,8 +5,22 @@
 bool stateLedApi;
 unsigned long lastTimeSensor = 0;
 unsigned long timerDelaySensor = 10000;
+
 unsigned long lastTimeLed = 0;
 unsigned long timerDelayLed = 10;
+
+//Sensor ultrassonico
+const int trigPin = D6;
+const int echoPin = D5;
+
+//define sound velocity in cm/uS
+#define SOUND_VELOCITY 0.034
+
+long duration;
+float distanceCm;
+float distanceInch;
+
+
 void setup() {
   Serial.begin(115200);
   delay(10);
@@ -47,6 +61,9 @@ void setup() {
   //Acendendo o led
   pinMode(D8,OUTPUT);
   http.end();
+  
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
 }
 
 void loop() {
@@ -72,22 +89,38 @@ void loop() {
     }
     //Após o documento ser um json salvando o state que recebe dentro de uma booleana para acender o led
     bool state = doc["state"]; // true
-    Serial.print(state);
+    //Serial.print(state);
     digitalWrite(D8,state);
     //reiniciando o cronometro
     lastTimeLed = millis();
   }
-  if((millis()-lastTimeSensor > timerDelaySensor)){
-    http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
-    http.addHeader("Content-Type", "application/json");
-    StaticJsonDocument<100> SensorDocument;
-    SensorDocument["nome"] = "Serializando o json";
-    SensorDocument["value"] = 10;
-    char bufferDoJsonEmString[100];
-    serializeJson(SensorDocument, bufferDoJsonEmString);
-    int httpResponseCode = http.POST(bufferDoJsonEmString);
-    String ResponseServer = http.getString();
-    Serial.println(ResponseServer);
-    lastTimeSensor = millis();
-  }
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Calculate the distance
+  distanceCm = duration * SOUND_VELOCITY/2;
+  Serial.println(distanceCm);
+  //if((millis()-lastTimeSensor > timerDelaySensor)){
+   // http.begin(client, "https://teste-iot-professor.onrender.com/sensor/acesso");
+   // http.addHeader("Content-Type", "application/json");
+   // StaticJsonDocument<100> SensorDocument;
+   // SensorDocument["nome"] = "Serializando o json";
+   // SensorDocument["value"] = 10;
+  //  char bufferDoJsonEmString[100];
+  //  serializeJson(SensorDocument, bufferDoJsonEmString);
+  //  int httpResponseCode = http.POST(bufferDoJsonEmString);
+  //  String ResponseServer = http.getString();
+ //   Serial.println(ResponseServer);
+ //   lastTimeSensor = millis();
+ // }
+
+ 
 } 
